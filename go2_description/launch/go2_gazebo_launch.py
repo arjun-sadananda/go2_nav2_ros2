@@ -69,13 +69,13 @@ def generate_launch_description():
     
     spawn_go2 = launch_ros.actions.Node(
     	package='gazebo_ros', 
-        # name='go2_spawner',
+        name='go2_spawner',
     	executable='spawn_entity.py',
-        arguments=['-entity', 'go2_gazebo', 
+        arguments=['-entity', 'go2_robot', 
                    '-topic', 'robot_description', 
                    '-timeout', '60', 
                 #    '-spawn_service_timeout', '60',
-                   '-robot_namespace', 'go2',
+                   # '-robot_namespace', 'go2',
                    '-x', '0.0', '-y', '0.0', '-z', '0.6', '-Y', '0.0'],
         # arguments=['-entity', 'go2', '-file', xacro_path, '-x', '0.0', '-y', '0.0', '-z', '0.6', '-Y', '0.0'],
         output='screen'
