@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="leg_transmission" params="name">
+
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+        <!-- ********************** FRONT RIGHT JOINTS *********************************  -->
+        <joint name="${name}_hip_joint">
+            <command_interface name="effort"/> 
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+    </ros2_control>
+  
+        <!-- <transmission name="${name}_hip_tran">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}_hip_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${name}_hip_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission> -->
+
+        <!-- <transmission name="${name}_thigh_tran">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}_thigh_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${name}_thigh_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <transmission name="${name}_calf_tran">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}_calf_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${name}_calf_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission> -->
+
+    </xacro:macro>
+
+</robot>
