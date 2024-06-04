@@ -13,7 +13,7 @@
     <!-- <xacro:include filename="/home/e-yantra/unitree_ws/install/go2_description/share/go2_description/xacro/leg.xacro"/> -->
     <!-- find-pkg-share -->
     <!-- <xacro:include filename="$(find go2_description)/xacro/stairs.xacro"/> -->
-    <!-- <xacro:include filename="$(find go2_description)/xacro/gazebo.xacro"/> -->
+    <xacro:include filename="$(find go2_description)/xacro/gazebo.xacro"/>
     <!-- <xacro:include filename="$(find go2_gazebo)/launch/stairs.urdf.xacro"/> -->
 
     <!-- <xacro:stairs stairs="15" xpos="0" ypos="0" zpos="0" /> -->
@@ -24,12 +24,13 @@
     <!-- Debug mode will hung up the robot, use "true" or "false" to switch it. -->
     <!-- <xacro:if value="$(arg DEBUG)">
     </xacro:if>  -->
-    <link name="world"/>
+    
+    <!-- <link name="world"/>
     <joint name="base_static_joint" type="fixed">
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <parent link="world"/>
         <child link="base"/>
-    </joint>
+    </joint> -->
 
     <link name="base">
         <visual>

@@ -18,6 +18,8 @@
 
 import os
 
+import launch_ros
+import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
@@ -37,13 +39,21 @@ def generate_launch_description():
     #     get_package_share_directory('go2_description'),
     #     'urdf',
     #     urdf_file_name)
-    urdf_path = os.path.join(
+    xacro_path = os.path.join(
         get_package_share_directory('go2_description'),
         'xacro',
         'robot.xacro')
 
-    with open(urdf_path, 'r') as infp:
+    with open(xacro_path, 'r') as infp:
         robot_desc = infp.read()
+
+    pkg_share = launch_ros.substitutions.FindPackageShare(package='go2_description').find('go2_description')
+    go2_xacro_file = os.path.join(pkg_share, 'xacro/', 'robot.xacro')
+    # assert os.path.exists(go2_xacro_file), "The robot.xacro doesnt exist in "+str(go2_xacro_file)
+    # doc = xacro.parse(open(go2_xacro_file))
+    # xacro.process_doc(doc)
+    go2_description_config = xacro.process_file(go2_xacro_file)
+    go2_description = go2_description_config.toxml()
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -58,7 +68,7 @@ def generate_launch_description():
             output='screen',
             parameters=[{
                 'use_sim_time': use_sim_time,
-                'robot_description': robot_desc
+                'robot_description': go2_description
             }],
         ),
     ])

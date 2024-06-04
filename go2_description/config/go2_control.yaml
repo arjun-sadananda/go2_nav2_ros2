@@ -39,18 +39,18 @@ go2_joint_trajectory_controllers:
       - velocity
 
     gains:
-      FR_hip_joint  : {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      FL_hip_joint  : {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      RR_hip_joint  : {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      RL_hip_joint  : {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      FR_thigh_joint: {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      FL_thigh_joint: {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      RR_thigh_joint: {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      RL_thigh_joint: {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      FR_calf_joint : {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      FL_calf_joint : {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      RR_calf_joint : {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
-      RL_calf_joint : {p: 10.0, d: .5, i: 0.0, i_clamp: 1.0, ff_velocity_scale: 1.0}
+      FR_hip_joint  : {p: 5000.0, d: 10.0, i: 1.0, i_clamp: 10.0, ff_velocity_scale: 1.0}
+      FL_hip_joint  : {p: 5000.0, d: 10.0, i: 1.0, i_clamp: 10.0, ff_velocity_scale: 1.0}
+      RR_hip_joint  : {p: 5000.0, d: 10.0, i: 1.0, i_clamp: 10.0, ff_velocity_scale: 1.0}
+      RL_hip_joint  : {p: 5000.0, d: 10.0, i: 1.0, i_clamp: 10.0, ff_velocity_scale: 1.0}
+      FR_thigh_joint: {p: 5000.0, d: 10.0, i: 0.1, i_clamp: 1.0, ff_velocity_scale: 1.0}
+      FL_thigh_joint: {p: 5000.0, d: 10.0, i: 0.1, i_clamp: 1.0, ff_velocity_scale: 1.0}
+      RR_thigh_joint: {p: 5000.0, d: 10.0, i: 0.1, i_clamp: 1.0, ff_velocity_scale: 1.0}
+      RL_thigh_joint: {p: 5000.0, d: 10.0, i: 0.1, i_clamp: 1.0, ff_velocity_scale: 1.0}
+      FR_calf_joint : {p: 5000.0, d: 10.0, i: 0.1,  i_clamp: 1.0, ff_velocity_scale: 1.0}
+      FL_calf_joint : {p: 5000.0, d: 10.0, i: 0.1,  i_clamp: 1.0, ff_velocity_scale: 1.0}
+      RR_calf_joint : {p: 5000.0, d: 10.0, i: 0.1,  i_clamp: 1.0, ff_velocity_scale: 1.0}
+      RL_calf_joint : {p: 5000.0, d: 10.0, i: 0.1,  i_clamp: 1.0, ff_velocity_scale: 1.0}
 
-    state_publish_rate: 100.0 # Defaults to 50
+    stt.0e_publish_rate: 100.0 # Defaults to 50
     action_monitor_rate: 20.0 # Defaults to 20

@@ -24,12 +24,20 @@ def generate_launch_description():
     pkg_share = launch_ros.substitutions.FindPackageShare(package='go2_description').find('go2_description')
 
     go2_xacro_file = os.path.join(pkg_share, 'xacro/', 'robot.xacro')
-    # assert os.path.exists(go2_xacro_file), "The robot.xacro doesnt exist in "+str(go2_xacro_file)
+    assert os.path.exists(go2_xacro_file), "The robot.xacro doesnt exist in "+str(go2_xacro_file)
     doc = xacro.parse(open(go2_xacro_file))
     xacro.process_doc(doc)
     # go2_description_config = xacro.process_file(go2_xacro_file)
     # go2_description = go2_description_config.toxml()
     go2_description = doc.toxml()
+
+    # xacro_path = os.path.join(
+    #     get_package_share_directory('go2_description'),
+    #     'xacro',
+    #     'robot.xacro')
+
+    # with open(xacro_path, 'r') as infp:
+    #     robot_desc = infp.read()
 
     # xacro_path = os.path.join(
     #     get_package_share_directory('go2_description'),
@@ -46,18 +54,25 @@ def generate_launch_description():
         robot_desc = infp.read()
 
 
+    # start_world = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(get_package_share_directory('go2_description'), 'launch', 'empty_world.launch.py'),
+    #     )
+    # )
     start_world = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('go2_description'), 'launch', 'empty_world.launch.py'),
-        )
-    )
+            PythonLaunchDescriptionSource([os.path.join(
+                get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
+            )
 
     robot_state_publisher_node = launch_ros.actions.Node(
         package='robot_state_publisher',
-        name='robot_state_publisher',
         executable='robot_state_publisher',
+        name='robot_state_publisher',
+        output='screen',
         # parameters=[{"robot_description": robot_desc}]
-        parameters=[{"robot_description": go2_description}]
+        parameters=[{
+            # 'use_sim_time': True,
+            "robot_description": go2_description}]#robot_desc}]# 
     )
 
     static_transform = launch_ros.actions.Node(
@@ -69,14 +84,15 @@ def generate_launch_description():
     
     spawn_go2 = launch_ros.actions.Node(
     	package='gazebo_ros', 
-        # name='go2_spawner',
+        name='go2_spawner',
     	executable='spawn_entity.py',
-        arguments=['-entity', 'go2_gazebo', 
+        arguments=['-entity', 'go2_robot', 
                    '-topic', 'robot_description', 
+                #    '-file', go2_description, ## BAD IDEA
                    '-timeout', '60', 
                 #    '-spawn_service_timeout', '60',
-                   '-robot_namespace', 'go2',
-                   '-x', '0.0', '-y', '0.0', '-z', '0.6', '-Y', '0.0'],
+                #    '-robot_namespace', 'go2',
+                   '-x', '0.0', '-y', '0.0', '-z', '0.45', '-Y', '0.0'],
         # arguments=['-entity', 'go2', '-file', xacro_path, '-x', '0.0', '-y', '0.0', '-z', '0.6', '-Y', '0.0'],
         output='screen'
     )
@@ -164,10 +180,10 @@ def generate_launch_description():
         spawn_go2,
         # load_go2_joint_state_broadcaster,
         # load_go2_joint_trajectory_controller
-        # delay_jsb_spawner,
-        go2_joint_state_broadcaster_spawner,
-        # delay_jtc_spawner
-        go2_joint_trajectory_controllers_spawner
+        delay_jsb_spawner,
+        # go2_joint_state_broadcaster_spawner,
+        delay_jtc_spawner
+        # go2_joint_trajectory_controllers_spawner
         # spawn_controller_fr,
         # spawn_controller_fl,
         # spawn_controller_rr,

@@ -30,7 +30,7 @@ def generate_launch_description():
     #     'urdf',
     #     'go2_descriptions.urdf'
     # )
-    urdf_path = os.path.join(
+    xacro_path = os.path.join(
         get_package_share_directory('go2_description'),
         'xacro',
         'robot.xacro'
@@ -54,9 +54,10 @@ def generate_launch_description():
         executable='spawn_entity.py',
         arguments=[
             '-entity', "go2",#TURTLEBOT3_MODEL,
-            '-file', urdf_path,
-            '-x', x_pose,
-            '-y', y_pose,
+            '-topic', 'robot_description', 
+            # '-file', xacro_path,
+            '-x', '0',#x_pose,
+            '-y', '0',#y_pose,
             '-z', '.6'
         ],
         output='screen',
@@ -65,8 +66,8 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Declare the launch options
-    ld.add_action(declare_x_position_cmd)
-    ld.add_action(declare_y_position_cmd)
+    # ld.add_action(declare_x_position_cmd)
+    # ld.add_action(declare_y_position_cmd)
 
     # Add any conditioned actions
     ld.add_action(start_gazebo_ros_spawner_cmd)
