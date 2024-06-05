@@ -6,18 +6,18 @@
 #include <chrono>
 
 
-class JointPublisher : public rclcpp::Node
+class Go2Controller : public rclcpp::Node
 { 
 public:
-    JointPublisher()
+    Go2Controller()
       : Node("joint_publisher"), count_(0), mode_(1){
-        publisher_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+        joint_commands_publisher_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
             "/go2_joint_trajectory_controllers/joint_trajectory", 10);
         timer_ = this->create_wall_timer(
-          std::chrono::milliseconds(100), std::bind(&JointPublisher::timer_callback, this));
+          std::chrono::milliseconds(100), std::bind(&Go2Controller::controller, this));
       }
 private:
-    void timer_callback(){
+    void controller(){
       auto message = trajectory_msgs::msg::JointTrajectory();
 
 // "FR_hip_joint", "FL_hip_joint", "RR_hip_joint","RL_hip_joint",
@@ -101,7 +101,7 @@ private:
       point.time_from_start = rclcpp::Duration::from_seconds(1.0);
 
       message.points.push_back(point);
-      publisher_->publish(message);
+      joint_commands_publisher_->publish(message);
 
       RCLCPP_INFO(this->get_logger(), "Publishing: '%f', '%f', '%f'", position_hip, position_thigh, position_calf);
       // RCLCPP_INFO(this->get_logger(), "Publishing: '%f', '%f', '%f'", position_hip, position_thigh, position_calf);
@@ -110,7 +110,7 @@ private:
     }
 
     rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr publisher_;
+    rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr joint_commands_publisher_;
     size_t count_;
     int    mode_;
 };
@@ -122,7 +122,7 @@ int main(int argc, char ** argv)
 
   // printf("hello world go2_description package\n");
   rclcpp::init(argc,argv);
-  rclcpp::spin(std::make_shared<JointPublisher>());
+  rclcpp::spin(std::make_shared<Go2Controller>());
   rclcpp::shutdown();
   return 0;
 }

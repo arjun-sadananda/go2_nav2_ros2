@@ -12,7 +12,8 @@
                 "/home/e-yantra/unitree_ws/src/go2_description/include/**",
                 "include/**",
                 "/usr/include/**",
-                "/opt/ros/humble/include/rclcpp"
+                "/opt/ros/humble/include/rclcpp",
+                "/opt/ros/humble/include/geometry_msgs"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",
