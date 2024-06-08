@@ -33,6 +33,7 @@ ros2 launch champ_config navigate.launch.py
 ```
 - Provide 2D Nav Goal on RViz.
 
+![navigation](https://github.com/arjun-sadananda/go2_nav2_ros2/blob/main/go2nav2.gif)
 
 ## Behind the Scenes
 **`champ_config`** `gazebo.launch.py`
