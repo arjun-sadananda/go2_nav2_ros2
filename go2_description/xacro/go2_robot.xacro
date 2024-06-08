@@ -165,7 +165,7 @@
         <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
             <!-- <parameters>$(find-pkg-share go2_description)/config/go2_controlgdsf.yaml</parameters> -->
             <!-- <parameters>"${find go2_description}/config/go2_control.yaml"</parameters> -->
-            <parameters>$(find champ_gazebo)/config/go2_ros_control.yaml</parameters>
+            <parameters>$(find go2_description)/config/go2_ros_control.yaml</parameters>
             <!-- <parameters>/home/e-yantra/unitree_ws/install/go2_description/share/go2_description/config/go2_control.yaml</parameters> -->
         </plugin>
     </gazebo>

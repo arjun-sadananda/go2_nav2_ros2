@@ -33,7 +33,7 @@ def generate_launch_description():
     xacro_path = os.path.join(
         get_package_share_directory('go2_description'),
         'xacro',
-        'robot.xacro'
+        'go2_robot.xacro'
     )
 
     # Launch configuration variables specific to simulation

@@ -23,7 +23,7 @@ def get_package_file(package, file_path):
 def generate_launch_description():
     pkg_share = launch_ros.substitutions.FindPackageShare(package='go2_description').find('go2_description')
 
-    go2_xacro_file = os.path.join(pkg_share, 'xacro/', 'robot.xacro')
+    go2_xacro_file = os.path.join(pkg_share, 'xacro/', 'go2_robot.xacro')
     assert os.path.exists(go2_xacro_file), "The robot.xacro doesnt exist in "+str(go2_xacro_file)
     doc = xacro.parse(open(go2_xacro_file))
     xacro.process_doc(doc)
