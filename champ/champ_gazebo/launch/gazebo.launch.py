@@ -42,17 +42,17 @@ def generate_launch_description():
     declare_world_init_z = DeclareLaunchArgument("world_init_z", default_value="0.45")
     declare_world_init_heading = DeclareLaunchArgument("world_init_heading", default_value="0.6")
 
-    pkg_share = launch_ros.substitutions.FindPackageShare(package="champ_description").find("champ_description")
-    default_model_path = os.path.join(pkg_share, "urdf/champ.urdf.xacro")
+    # pkg_share = launch_ros.substitutions.FindPackageShare(package="champ_description").find("champ_description")
+    # default_model_path = os.path.join(pkg_share, "urdf/champ.urdf.xacro")
 
-    declare_description_path = DeclareLaunchArgument(name="description_path", default_value=default_model_path, description="Absolute path to robot urdf file")
+    # declare_description_path = DeclareLaunchArgument(name="description_path", default_value=default_model_path, description="Absolute path to robot urdf file")
 
     config_pkg_share = launch_ros.substitutions.FindPackageShare(package="champ_config").find("champ_config")
     
     links_config = os.path.join(config_pkg_share, "config/links/links.yaml")
-    gazebo_config = os.path.join(launch_ros.substitutions.FindPackageShare(package="champ_gazebo").find("champ_gazebo"), "config/gazebo.yaml")
+    # gazebo_config = os.path.join(launch_ros.substitutions.FindPackageShare(package="champ_gazebo").find("champ_gazebo"), "config/gazebo.yaml")
 
-    launch_dir = os.path.join(pkg_share, "launch")
+    # launch_dir = os.path.join(pkg_share, "launch")
     # Specify the actions
     # start_gazebo_server_cmd = ExecuteProcess(
     #     cmd=[
@@ -161,7 +161,7 @@ def generate_launch_description():
             declare_world_init_y,
             declare_world_init_z,
             declare_world_init_heading,
-            declare_description_path,
+            # declare_description_path,
             start_gazebo_server_cmd,
             start_gazebo_client_cmd,
             start_gazebo_spawner_cmd,

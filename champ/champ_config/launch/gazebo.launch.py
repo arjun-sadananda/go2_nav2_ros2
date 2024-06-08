@@ -24,11 +24,11 @@ def generate_launch_description():
     config_pkg_share = launch_ros.substitutions.FindPackageShare(
             package="champ_config").find("champ_config")
 
-    descr_pkg_share = launch_ros.substitutions.FindPackageShare(
-            package="champ_description").find("champ_description")
+    # descr_pkg_share = launch_ros.substitutions.FindPackageShare(
+    #         package="champ_description").find("champ_description")
 
 
-    default_model_path       = os.path.join(descr_pkg_share, "urdf/champ.urdf.xacro")
+    # default_model_path       = os.path.join(descr_pkg_share, "urdf/champ.urdf.xacro")
     joints_config            = os.path.join(config_pkg_share, "config/joints/joints.yaml")
     links_config             = os.path.join(config_pkg_share, "config/links/links.yaml")
     gait_config              = os.path.join(config_pkg_share, "config/gait/gait.yaml")
@@ -61,7 +61,7 @@ def generate_launch_description():
             )
         ),
         launch_arguments={
-            "description_path": default_model_path,
+            # "description_path": '',
             "joints_map_path": joints_config,
             "links_map_path": links_config,
             "gait_config_path": gait_config,

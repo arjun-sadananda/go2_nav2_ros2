@@ -73,19 +73,19 @@ def generate_launch_description():
             "robot_description": go2_description}]#robot_desc}]# 
     )
 
-    description_ld = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("champ_description"),
-                "launch",
-                "description.launch.py",
-            )
-        ),
-        launch_arguments={
-            "use_sim_time": LaunchConfiguration("use_sim_time"),
-            "description_path": LaunchConfiguration("description_path"),
-        }.items(),
-    )
+    # description_ld = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(
+    #             get_package_share_directory("champ_description"),
+    #             "launch",
+    #             "description.launch.py",
+    #         )
+    #     ),
+    #     launch_arguments={
+    #         "use_sim_time": LaunchConfiguration("use_sim_time"),
+    #         "description_path": LaunchConfiguration("description_path"),
+    #     }.items(),
+    # )
 
     quadruped_controller_node = Node(
         package="champ_base",
