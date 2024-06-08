@@ -21,7 +21,7 @@
             </xacro:if>
             
             <parent link="trunk"/>
-            <child link="${name}_hip"/>
+            <child link="${name}_hip_link"/>
 
             <axis xyz="1 0 0"/>
             <dynamics damping="${damping}" friction="${friction}"/>
@@ -35,7 +35,7 @@
         </joint>
 
 
-        <link name="${name}_hip">
+        <link name="${name}_hip_link">
             <visual>
                 <xacro:if value="${(mirror_dae == True) and (front_hind_dae == True)}">
                     <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -73,17 +73,17 @@
             </inertial>
         </link>
 
-        <joint name="${name}_thigh_joint" type="revolute">
+        <joint name="${name}_upper_leg_joint" type="revolute">
             <origin rpy="0 0 0" xyz="0 ${thigh_offset*mirror} 0"/>
-            <parent link="${name}_hip"/>
-            <child link="${name}_thigh"/>
+            <parent link="${name}_hip_link"/>
+            <child link="${name}_upper_leg_link"/>
             <axis xyz="0 1 0"/>
             <dynamics damping="${damping}" friction="${friction}"/>
             <limit effort="${thigh_torque_max}" velocity="${thigh_velocity_max}" lower="${thigh_position_min}" upper="${thigh_position_max}"/>
         </joint>
 
 
-        <link name="${name}_thigh">
+        <link name="${name}_upper_leg_link">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
@@ -104,7 +104,13 @@
             </collision>
             <inertial>
                 <origin rpy="0 0 0" xyz="${thigh_com_x} ${thigh_com_y*mirror} ${thigh_com_z}"/>
-                <mass value="${thigh_mass}"/>
+                <xacro:if value="${front_hind == -1}">
+                    <mass value=".5"/>
+                </xacro:if>
+                <xacro:if value="${front_hind == 1}">
+                    <mass value="${thigh_mass}"/>
+                    <!-- 1.152 -->
+                </xacro:if>
                 <inertia
                     ixx="${thigh_ixx}" ixy="${thigh_ixy*mirror}" ixz="${thigh_ixz}"
                     iyy="${thigh_iyy}" iyz="${thigh_iyz*mirror}"
@@ -113,17 +119,17 @@
         </link>
 
 
-        <joint name="${name}_calf_joint" type="revolute">
+        <joint name="${name}_lower_leg_joint" type="revolute">
             <origin rpy="0 0 0" xyz="0 0 ${-thigh_length}"/>
-            <parent link="${name}_thigh"/>
-            <child link="${name}_calf"/>
+            <parent link="${name}_upper_leg_link"/>
+            <child link="${name}_lower_leg_link"/>
             <axis xyz="0 1 0"/>
             <dynamics damping="${damping}" friction="${friction}"/>
             <limit effort="${calf_torque_max}" velocity="${calf_velocity_max}" lower="${calf_position_min}" upper="${calf_position_max}"/>
         </joint>
 
 
-        <link name="${name}_calf">
+        <link name="${name}_lower_leg_link">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
@@ -148,13 +154,13 @@
         </link>
 
 
-        <joint name="${name}_foot_fixed" type="fixed">0
+        <joint name="${name}_foot_joint" type="fixed">0
             <origin rpy="0 0 0" xyz="0 0 ${-(calf_length)}"/>
-            <parent link="${name}_calf"/>
-            <child link="${name}_foot"/>
+            <parent link="${name}_lower_leg_link"/>
+            <child link="${name}_foot_link"/>
         </joint>
 
-        <link name="${name}_foot">
+        <link name="${name}_foot_link">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
@@ -177,6 +183,53 @@
             </inertial>
         </link>
 
+        <ros2_control name="${name}" type="system">
+            <hardware>
+                <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            </hardware>
+            <!-- ********************** FRONT RIGHT JOINTS *********************************  -->
+            <joint name="${name}_hip_joint">
+                <command_interface name="effort"/> 
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="${name}_upper_leg_joint">
+                <command_interface name="effort"/> 
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="${name}_lower_leg_joint">
+                <command_interface name="effort"/> 
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+        </ros2_control>
+
+        <!-- RR leg -->
+        <gazebo reference="${name}_hip_link">
+            <mu1>0.2</mu1>
+            <mu2>0.2</mu2>
+        </gazebo>
+        <gazebo reference="${name}_upper_leg_link">
+            <mu1>0.2</mu1>
+            <mu2>0.2</mu2>
+            <self_collide>1</self_collide>
+            <kp  value="1000000.0"/>
+            <kd  value="1.0"/>
+        </gazebo>
+        <gazebo reference="${name}_lower_leg_link">
+            <mu1>0.2</mu1>
+            <mu2>0.2</mu2>
+            <self_collide>1</self_collide>
+        </gazebo>
+        <gazebo reference="${name}_foot_link">
+            <kp>10000000000.0</kp>
+            <kd>100.0</kd>
+            <mu1>0.8</mu1>
+            <mu2>0.8</mu2>
+            <minDepth>0.05</minDepth>
+            <material>Gazebo/FlatBlack</material>
+        </gazebo>
         <!-- <xacro:leg_transmission name="${name}"/> -->
     </xacro:macro>
 </robot>

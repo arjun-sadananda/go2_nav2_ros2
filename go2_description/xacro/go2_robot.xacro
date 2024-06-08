@@ -6,14 +6,16 @@
 
     <xacro:include filename="$(find go2_description)/xacro/const.xacro"/>
     <xacro:include filename="$(find go2_description)/xacro/materials.xacro"/>
-    <xacro:include filename="$(find go2_description)/xacro/leg.xacro"/>
+    <xacro:include filename="$(find go2_description)/xacro/go2_leg.xacro"/>
     <!-- <xacro:include filename="/home/e-yantra/unitree_ws/install/go2_description/share/go2_description/xacro/const.xacro"/>
     <xacro:include filename="/home/e-yantra/unitree_ws/install/go2_description/share/go2_description/xacro/materials.xacro"/>
     <xacro:include filename="/home/e-yantra/unitree_ws/install/go2_description/share/go2_description/xacro/leg.xacro"/> -->
     <!-- <xacro:include filename="/home/e-yantra/unitree_ws/install/go2_description/share/go2_description/xacro/leg.xacro"/> -->
     <!-- find-pkg-share -->
     <!-- <xacro:include filename="$(find go2_description)/xacro/stairs.xacro"/> -->
-    <xacro:include filename="$(find go2_description)/xacro/gazebo.xacro"/>
+
+    <!-- <xacro:include filename="$(find go2_description)/urdf/gazebo.xacro"/> -->
+
     <!-- <xacro:include filename="$(find go2_gazebo)/launch/stairs.urdf.xacro"/> -->
 
     <!-- <xacro:stairs stairs="15" xpos="0" ypos="0" zpos="0" /> -->
@@ -26,13 +28,15 @@
     </xacro:if>  -->
     
     <!-- <link name="world"/>
+    <link name="map"/>
     <joint name="base_static_joint" type="fixed">
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <parent link="world"/>
-        <child link="base"/>
+        <child link="map"/>
     </joint> -->
+    <xacro:include filename="$(find go2_description)/xacro/accessories.urdf.xacro" />
 
-    <link name="base">
+    <link name="base_link">
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -43,7 +47,7 @@
 
     <joint name="floating_base" type="fixed">
         <origin rpy="0 0 0" xyz="0 0 0"/>
-        <parent link="base"/>
+        <parent link="base_link"/>
         <child link="trunk"/>
     </joint>
 
@@ -62,22 +66,29 @@
             </geometry>
         </collision>
         <inertial>
-            <origin rpy="0 0 0" xyz="0.021112 0 -0.005366"/>
-            <!-- <origin rpy="0 0 0" xyz="${trunk_com_x} ${trunk_com_y} ${trunk_com_z}"/> -->
-            <mass value="6.921"/>
-            <!-- <mass value="${trunk_mass}"/> -->
-            <inertia 
+            <!-- <origin rpy="0 0 0" xyz="0.021112 0 -0.005366"/> -->
+            <origin rpy="0 0 0" xyz="${trunk_com_x} ${trunk_com_y} ${trunk_com_z}"/>
+            <!-- <mass value="6.921"/> -->
+            <!-- <mass value="2"/> -->
+            <mass value="${trunk_mass}"/>
+            <!-- <inertia 
                 ixx="0.02448" ixy="0.00012166" ixz="0.0014849"
                 iyy="0.098077" iyz="-3.12E-05"
-                izz="0.107"/>  
-            <!-- <inertia             
+                izz="0.107"/>   -->
+            <inertia             
                 ixx="${trunk_ixx}" ixy="${trunk_ixy}" ixz="${trunk_ixz}"
                 iyy="${trunk_iyy}" iyz="${trunk_iyz}"
-                izz="${trunk_izz}"/>   -->
+                izz="${trunk_izz}"/>
         </inertial>
     </link>
 
-    <joint name="imu_joint" type="fixed">
+    <xacro:accessories 
+        base_name="base_link" 
+        base_length="0.3762"
+        base_height="0.114"
+    />
+    
+    <!-- <joint name="imu_joint" type="fixed">
         <parent link="trunk"/>
         <child link="imu_link"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -94,7 +105,7 @@
             <geometry>
                 <box size="0.001 0.001 0.001"/>
             </geometry>
-            <!-- <material name="red"/> -->
+            <material name="red"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -102,7 +113,7 @@
                 <box size=".001 .001 .001"/>
             </geometry>
         </collision>
-    </link>
+    </link> -->
     <!--
     <joint name="load_joint" type="fixed">
         <parent link="trunk"/>
@@ -130,94 +141,31 @@
         </collision>
     </link>
 -->
-    <xacro:leg name="FR" mirror="-1" mirror_dae= "False" front_hind="1"  front_hind_dae="True"  />
-    <xacro:leg name="FL" mirror="1"  mirror_dae="True"   front_hind="1"  front_hind_dae="True"  />
-    <xacro:leg name="RR" mirror="-1" mirror_dae="False"  front_hind="-1" front_hind_dae="False" />
-    <xacro:leg name="RL" mirror="1"  mirror_dae="True"   front_hind="-1" front_hind_dae="False" />
+    <xacro:leg name="lf" mirror="1"  mirror_dae="True"   front_hind="1"  front_hind_dae="True"  />
+    <xacro:leg name="rf" mirror="-1" mirror_dae= "False" front_hind="1"  front_hind_dae="True"  />
+    <xacro:leg name="lh" mirror="1"  mirror_dae="True"   front_hind="-1" front_hind_dae="False" />
+    <xacro:leg name="rh" mirror="-1" mirror_dae="False"  front_hind="-1" front_hind_dae="False" />
 
-    <!-- <gazebo reference="FR_calf">
-        <material>Gazebo/Orange</material>
-        <kp>${kp}</kp>
-        <kd>${kd}</kd>
-        <mu1>${mu1}</mu1>
-        <mu2>${mu2}</mu2>
-        <maxVel>${max_vel}</maxVel>
-        <minDepth>${min_depth}</minDepth>
-    </gazebo> -->
+    <gazebo>
+      <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+        <ros>
+            <argument>odom:=odom/ground_truth</argument>
+        </ros>
 
-    <ros2_control name="GazeboSystem" type="system">
-        <hardware>
-            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
-        </hardware>
-        <!-- ********************** FRONT RIGHT JOINTS *********************************  -->
-        <joint name="FR_hip_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="FL_hip_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="RR_hip_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="RL_hip_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="FR_thigh_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="FL_thigh_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="RR_thigh_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="RL_thigh_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="FR_calf_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="FL_calf_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="RR_calf_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="RL_calf_joint">
-            <command_interface name="effort"/> 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        
-    </ros2_control>
+        <body_name>base_link</body_name>
+        <frame_name>world</frame_name>
+        <update_rate>10.0</update_rate>
+        <xyz_offset>0 0 0</xyz_offset>
+        <rpy_offset>0 0 0</rpy_offset>
+        <gaussian_noise>0.01</gaussian_noise>
+    </plugin>
+    </gazebo>
 
     <gazebo>
         <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
             <!-- <parameters>$(find-pkg-share go2_description)/config/go2_controlgdsf.yaml</parameters> -->
             <!-- <parameters>"${find go2_description}/config/go2_control.yaml"</parameters> -->
-            <parameters>$(find go2_description)/config/go2_control.yaml</parameters>
+            <parameters>$(find champ_gazebo)/config/go2_ros_control.yaml</parameters>
             <!-- <parameters>/home/e-yantra/unitree_ws/install/go2_description/share/go2_description/config/go2_control.yaml</parameters> -->
         </plugin>
     </gazebo>
