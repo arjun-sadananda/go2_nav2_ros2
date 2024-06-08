@@ -1,4 +1,4 @@
-# Unitree Go2 go 2 goal
+# Unitree Go2 goes 2 goal
 
 ROS2 Packages for simulating Unitree Go2 in Gazebo ROS2 and navigating the robot to a desired goal using Nav2.
 
