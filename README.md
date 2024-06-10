@@ -13,7 +13,7 @@ This repo includes the following packages:
   - `/xacro`contains the robot description, `/meshes` contains the mesh files used.
   - Additionally `/config` is added to contain the ros2 control parameters for joint level control and state feedback interface
   - rest of the repo is not important used but was used during debugging.
-- **`champ`**
+- **`champ`** packages
   - This is borrowed from [ROS Packages for CHAMP Quadruped Controller](https://github.com/chvmp/champ.git). Few files have been modified to make it suitable for go2.
   - Most important changes are in `gait.yaml` and `state_estimation` node. (Experimental changes in the trajectory_planner to change stance and swing time didn't show great results and threfore have been commented out).
   - Rest of the changes are primarily in launch files to change the robot, the world and the map used.
