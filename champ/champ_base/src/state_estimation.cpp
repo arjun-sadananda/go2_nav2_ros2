@@ -186,8 +186,8 @@ void StateEstimation::publishFootprintToOdom_()
     odom.pose.covariance[7] = 0.25;
     odom.pose.covariance[35] = 0.017;
 
-    odom.twist.twist.linear.x = 2*current_velocities_.linear.x;
-    odom.twist.twist.linear.y = 2*current_velocities_.linear.y;
+    odom.twist.twist.linear.x = current_velocities_.linear.x;
+    odom.twist.twist.linear.y = current_velocities_.linear.y;
     odom.twist.twist.linear.z = 0.0;
 
     odom.twist.twist.angular.x = 0.0;
